@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quoridor Mini - Glassmorphic Cyberpunk Edition</title>
+  <!-- Google Fonts: Space Grotesk & Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Background decorative elements -->
+  <div class="stars-overlay"></div>
+  <div class="glow-orb glow-1"></div>
+  <div class="glow-orb glow-2"></div>
+
+  <div class="container">
+    <header>
+      <h1 class="logo">QUORIDOR <span class="accent-text">MINI</span></h1>
+      <p class="subtitle">Visualisasi Algoritma Minimax & Alpha-Beta Pruning pada Grid 5x5</p>
+    </header>
+
+    <div class="dashboard-grid">
+      <!-- PANEL KIRI: SETELAN & KONTROL -->
+      <aside class="panel side-panel left-panel">
+        <div class="card glass-card">
+          <div class="card-header">
+            <span class="icon">⚙️</span>
+            <h2>Konfigurasi</h2>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label for="depthSelect">Kedalaman Pencarian (Depth)</label>
+              <div class="select-wrapper">
+                <select id="depthSelect">
+                  <option value="1">1 (Sangat Mudah)</option>
+                  <option value="2">2 (Mudah)</option>
+                  <option value="3" selected>3 (Normal)</option>
+                  <option value="4">4 (Sulit)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="form-group toggle-group">
+              <span class="toggle-label">Gunakan Alpha-Beta Pruning</span>
+              <label class="switch">
+                <input type="checkbox" id="alphaBetaToggle">
+                <span class="slider round"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass-card">
+          <div class="card-header">
+            <span class="icon">🛡️</span>
+            <h2>Status & Aksi</h2>
+          </div>
+          <div class="card-body">
+            <div id="status-badge" class="status-badge turn-player">
+              <div id="status">Giliran: Player</div>
+            </div>
+
+            <!-- Inventaris Wall Player -->
+            <div class="inventory-section">
+              <div class="inventory-header">
+                <span>Dinding Player (Sian)</span>
+                <span id="player-wall-count" class="count-value">5 / 5</span>
+              </div>
+              <div id="player-wall-inventory" class="wall-inventory">
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+              </div>
+            </div>
+
+            <!-- Inventaris Wall AI -->
+            <div class="inventory-section">
+              <div class="inventory-header">
+                <span>Dinding AI (Merah)</span>
+                <span id="ai-wall-count" class="count-value">5 / 5</span>
+              </div>
+              <div id="ai-wall-inventory" class="wall-inventory">
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+                <div class="wall-inv-slot active"></div>
+              </div>
+            </div>
+
+            <div class="actions-group">
+              <button id="wallBtn" class="btn btn-primary">
+                <span class="btn-icon">🚧</span> Pasang Wall
+              </button>
+              <button id="restartBtn" class="btn btn-secondary">
+                <span class="btn-icon">🔄</span> Restart Game
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- PANEL TENGAH: ARENA GAME -->
+      <main class="panel main-panel">
+        <div class="arena-card glass-card">
+          <div class="goal-indicator goal-ai">ZONA GOL PLAYER (AI Win Target)</div>
+          <div class="board-container">
+            <div id="board"></div>
+          </div>
+          <div class="goal-indicator goal-player">ZONA GOL AI (Player Win Target)</div>
+        </div>
+      </main>
+
+      <!-- PANEL KANAN: STATISTIK & TREE -->
+      <aside class="panel side-panel right-panel">
+        <div class="card glass-card">
+          <div class="card-header">
+            <span class="icon">📊</span>
+            <h2>Telemetri</h2>
+          </div>
+          <div class="card-body">
+            <div class="stats-grid">
+              <div class="stat-box">
+                <div class="stat-value" id="nodeCount">0</div>
+                <div class="stat-label">Node Dievaluasi</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value" id="prunedCount">0</div>
+                <div class="stat-label">Node Dipangkas</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-value" id="calcTime">0 ms</div>
+                <div class="stat-label">Waktu Komputasi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card glass-card tree-card">
+          <div class="card-header">
+            <span class="icon">🌿</span>
+            <h2>Visualisasi Game Tree</h2>
+          </div>
+          <div class="card-body">
+            <div id="treeContainer">
+              <!-- Default info content -->
+              <div class="tree-info-placeholder">Mulai permainan atau biarkan AI melangkah untuk melihat game tree...</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
